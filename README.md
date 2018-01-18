@@ -30,7 +30,7 @@ yum install glusterfs gluster-cli glusterfs-libs glusterfs-server
 ```
 注意: 使用heketi管理glusterfs，需要独立分区的，并且**没有文件系统**的分区设备，分区之后不要使用mkfs.xxx格式化分区
 如果使用heketi，可以跳过分区步骤。(在heketi中会执行类似的步骤)
-- XFS bricks
+### (3) XFS bricks
 在磁盘/dev/vdb上创建pv
 ```
 pvcreate /dev/vdb
@@ -58,7 +58,7 @@ mount /dev/vg_gluster/brick2 /bricks/brick2
 /dev/vg_gluster/brick2  /bricks/brick2    xfs     defaults    0 0
 ```
 至此，在glusterfs节点上创建了两个xfs砖区，挂载在/bricks/brick{1,2}文件夹下。
-###  (3) 启动server，信任池创建
+###  (4) 启动server，信任池创建
 ```
 systemctl enable glusterd.service
 systemctl start glusterd.service
@@ -69,7 +69,7 @@ gluster peer probe gluster2.example.com  //在一个node上执行即可
  firewall-cmd --zone=public --add-port=24007-24008/tcp --permanent
  firewall-cmd --reload
 ```
-### (4) 创建volume
+### (5) 创建volume
 在两个节点集群上，创建一个replica为2的volume
 
 ```
