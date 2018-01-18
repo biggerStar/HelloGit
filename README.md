@@ -58,7 +58,7 @@ mount /dev/vg_gluster/brick2 /bricks/brick2
 /dev/vg_gluster/brick2  /bricks/brick2    xfs     defaults    0 0
 ```
 至此，在glusterfs节点上创建了两个xfs砖区，挂载在/bricks/brick{1,2}文件夹下。
-- (3) 启动server，信任池创建
+###  (3) 启动server，信任池创建
 ```
 systemctl enable glusterd.service
 systemctl start glusterd.service
@@ -69,7 +69,7 @@ gluster peer probe gluster2.example.com  //在一个node上执行即可
  firewall-cmd --zone=public --add-port=24007-24008/tcp --permanent
  firewall-cmd --reload
 ```
-- 创建volume
+### (4) 创建volume
 在两个节点集群上，创建一个replica为2的volume
 
 ```
@@ -78,7 +78,7 @@ gluster volume create glustervol1 replica 2 transport tcp gluster1.example.com:/
 gluster2.example.com:/bricks/brick1/brick
 gluster volume start glustervol1
 ```
-(4) 测试
+### (5) 测试
 将本地的一个目录/mnt挂载到glusterfs中,命令:mount.glusterfs `<IP or hostname>`:`<volume_name>` `<mount_point>
 ```
 mount -t glusterfs gluster1.example.com:/bricks/brick1/brick /mnt
@@ -100,7 +100,7 @@ gluster volume create myvol1 replica 2 server{1..4}:/data/glusterfs/myvol1/brick
 ## Volume
 Volume是bricks逻辑上的集合，大多数gluster文件系统都是工作在volume之上。gluster文件系统支持多种volume:
 
-- Distributed Glusterfs Volume
+### Distributed Glusterfs Volume
 
 这是默认创建的volume类型，存储方式是：同一个文件只会存在与一个brick里，没有数据冗余，这样设计的目的是为了简单而且廉价地进行volume扩展，同时，也存在数据丢失的可能。
 创建：gluster volume create NEW-VOLNAME [transport [tcp | rdma | tcp,rdma]] NEW-BRICK...
@@ -115,20 +115,20 @@ gluster volume create test-volume server1:/exp1 server2:/exp2 server3:/exp3 serv
 gluster volume create test-volume replica 2 transport tcp server1:/exp1 server2:/exp2
 ```
 ![](images/2.png)
-- Distributed Replicated Glusterfs Volume
+### Distributed Replicated Glusterfs Volume
 分布式复制卷，结合了上面两种volume的优势，既能备份数据，又可以扩容。在创建volume的时候，bricks的数量为副本数量的倍数。例如：现在有8个bricks，replica设置为2的话，那么前两个bricks会相互备份数据，3，4bricks会相互备份数据，以此类推。
 ```
 gluster volume create test-volume replica 2 transport tcp server1:/exp1 server2:/exp2 server3:/exp3 server4:/exp4
 ```
 ![](images/3.png)
-- Striped Glusterfs Volume
+### Striped Glusterfs Volume
 如果一个大文件的并发访问量很大，这就会造成单个brick负载很重，性能也会受形象。条数据卷可以解决此类问题，该数据卷将文件分解成多个数据条，存储在不同的bricks中。问题是没有数据冗余。
 ```
 gluster volume create test-volume stripe 2 transport tcp server1:/exp1 server2:/exp2
 ```
 ![](images/4.png)
 
-- Distributed Striped Glusterfs Volume
+### Distributed Striped Glusterfs Volume
 Distributed Striped Glusterfs Volume与Striped Glusterfs Volume类似，唯一不同的是，该Distributed Striped Glusterfs Volume可以被分发到更多了bricks上。bricks的数量必须为stripes数量的倍数。
 ```
 gluster volume create test-volume stripe 4 transport tcp
