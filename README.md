@@ -108,7 +108,7 @@ Volume是bricks逻辑上的集合，大多数gluster文件系统都是工作在v
 gluster volume create test-volume server1:/exp1 server2:/exp2 server3:/exp3 server4:/exp4
 ```
 ![](images/1.png)
-- Replicated Glusterfs Volume
+### Replicated Glusterfs Volume
 复制卷，克服了数据丢失问题，将同一个文件备份多份到不同的brick里。在创建volume的时候，需要指定replica的数量，例如，我们指定了replica为2，那么就需要至少两个bricks。
 创建命令：gluster volume create NEW-VOLNAME [replica COUNT] [transport [tcp | rdma | tcp,rdma]] NEW-BRICK...
 ```
