@@ -6,11 +6,11 @@ Heketi提供了rest风格的api接口去管理GlusterFS, volume的生命周期�
 - 等待所有bricks创建成功之后，创建volume
 
 ## heketi 安装
-### yum 安装
+### (1)yum 安装
 ```
 yum install heketi heketi-client
 ```
-### 环境配置
+### (2)环境配置
 heketi要求ssh的免密登陆，因此需要设置
 - 在heketi server上生成签名，并发送给glusterfs所在的机器
 ```
@@ -20,20 +20,20 @@ ssh-copy-id -i /etc/heketi/heketi_key.pub root@server1.com
 ssh-copy-id -i /etc/heketi/heketi_key.pub root@server2.com
 ```
 - 注释掉/etc/sudoers中的requiretty
-### heketi server配置
+### (3)heketi server配置
 配置文件在/etc/heketi/heketi.json，[`heketi.json示例`](heketi.json)
 
-### 启动
+### (4)启动
 ```
 systemctl enable heketi
 systemctl start heketi
 systemctl status heketi
 ```
-### 验证
+### (5)验证
 ```
 curl http://heketi-server:prot/hello
 ```
-### topolog.json
+### (6)topolog.json
 topolog.json文件描述了GlusterFS集群情况，[`topolog.json示例`](topolog.json)
 设置heketi-server地址到环境变量里
 ```
@@ -43,20 +43,20 @@ export HEKETI_CLI_SERVER=http://heketi-server:port
 ```
 heketi-cli topology load --json=topology.json
 ```
-### 创建volume
+### (7)创建volume
 ```
 heketi-cli volume create -size=100  -replica=3
 
 ```
-### 查看volume
+### (8)查看volume
 ```
 heketi-cli volume list
 ```
-### 删除volume
+### (9)删除volume
 ```
 heketi-cli volume delete
 ```
-### 日志
+### (10)日志
 ```
 journalctl -u heketi
 or
