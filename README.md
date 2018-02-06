@@ -1,3 +1,4 @@
+
 # glusterfs介绍 
 Glusterfs是一种分布式的网络存储文件系统，可灵活扩展。他还提供了接口，方便的存储对象、块和文件。具体介绍查看[`Introducing Gluster File System`](http://docs.gluster.org/en/latest/Administrator%20Guide/GlusterFS%20Introduction/)
 glusterfs集群的工作流程如下：
